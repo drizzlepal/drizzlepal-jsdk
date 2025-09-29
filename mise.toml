@@ -1,0 +1,5 @@
+[tools]
+java = "liberica-8u452+11"
+maven = "latest"
+
+[tasks.test]

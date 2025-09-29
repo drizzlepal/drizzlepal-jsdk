@@ -1,0 +1,3 @@
+{
+  "rowJsonPath": "$.rows[0]"
+}

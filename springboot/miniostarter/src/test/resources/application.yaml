@@ -1,0 +1,5 @@
+drizzlepal:
+  minio:
+    access-key: hmPkxbF0cUAfvoyuJkaN
+    secret-key: SCw8jRwSktbdczf9k0z6I4LaiiLzdFSxhx0zZ26s
+    endpoint: http://localhost:9000
