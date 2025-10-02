@@ -25,5 +25,27 @@
                 }
             },
         },
+        {
+            "label": "rebuild drizzlepal jsdk on windows",
+            "type": "shell",
+            "command": "C:\\Users\\wangsongyu\\AppData\\Local\\mise\\installs\\mvnd\\1.0.3\\maven-mvnd-1.0.3-windows-amd64\\bin\\mvnd.exe",
+            "args": [
+                "-e",
+                "-s",
+                "C:\\Users\\wangsongyu\\projects\\drizzlepal\\settings.xml",
+                "-f",
+                "C:\\Users\\wangsongyu\\projects\\drizzlepal\\drizzlepal-jsdk/pom.xml",
+                "'-Dmaven.test.skip=true'",
+                "clean",
+                "compile",
+                "package",
+                "install"
+            ],
+            "options": {
+                "env": {
+                    "JAVA_HOME": "C:\\Users\\wangsongyu\\AppData\\Local\\mise\\installs\\java\\liberica-17.0.16+12"
+                }
+            },
+        }
     ]
 }
