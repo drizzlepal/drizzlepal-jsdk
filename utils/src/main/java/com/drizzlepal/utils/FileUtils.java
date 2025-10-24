@@ -3,10 +3,12 @@ package com.drizzlepal.utils;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.channels.SeekableByteChannel;
 import java.nio.file.Files;
@@ -62,8 +64,10 @@ public class FileUtils {
      *                               加载策略：
      *                               1. 优先从JAR文件同级目录查找
      *                               2. 找不到时从类路径资源加载
+     * @throws URISyntaxException    获取JAR文件路径异常
      */
-    private static InputStream loadFile(String... paths) throws FileNotFoundException {
+    private static InputStream loadFile(Class<?> runTimeMainJarClass, String... paths)
+            throws FileNotFoundException, URISyntaxException {
         if (paths == null || paths.length == 0) {
             throw new FileNotFoundException("文件路径不可为空");
         }
@@ -72,19 +76,75 @@ public class FileUtils {
             joiner.add(path);
         }
         String filename = joiner.toString();
-        try {
-            Path jarDir = Paths.get(FileUtils.class.getProtectionDomain()
-                    .getCodeSource().getLocation().toURI()).getParent();
-
-            Path filePath = jarDir.resolve(filename);
-            if (Files.exists(filePath)) {
+        Path jarDir = Paths
+                .get(runTimeMainJarClass.getProtectionDomain().getCodeSource()
+                        .getLocation().toURI())
+                .getParent();
+        Path filePath = jarDir.resolve(filename);
+        if (Files.exists(filePath)) {
+            try {
                 return new FileInputStream(filePath.toFile());
+            } catch (java.io.FileNotFoundException e) {
+                throw new FileNotFoundException(e);
             }
-        } catch (URISyntaxException | IOException e) {
-            e.printStackTrace();
         }
-        InputStream classpathStream = FileUtils.class.getClassLoader().getResourceAsStream(filename);
+        InputStream classpathStream = ClassLoader.getSystemResourceAsStream(filename);
         return classpathStream;
+    }
+
+    /**
+     * 加载文件资源为URL，支持从JAR包所在目录或类路径加载
+     * 
+     * @param allowNotFoundInJar  是否允许JAR包外找不到文件
+     * @param runTimeMainJarClass 运行时主JAR包类对象
+     * @param paths               可变参数，文件路径组成部分
+     * @return 文件URL
+     * @throws IOException           文件操作异常
+     * @throws FileNotFoundException 文件不存在异常
+     * @throws URISyntaxException    获取JAR文件路径异常
+     */
+    public static URL resourcesFile(boolean allowNotFoundInJar, Class<?> runTimeMainJarClass, String... paths)
+            throws IOException, FileNotFoundException, URISyntaxException {
+        if (paths == null || paths.length == 0) {
+            throw new FileNotFoundException("文件路径不可为空");
+        }
+        StringJoiner joiner = new StringJoiner(File.separator);
+        for (String path : paths) {
+            joiner.add(path);
+        }
+        String filename = joiner.toString();
+        Path jarDir = Paths
+                .get(runTimeMainJarClass.getProtectionDomain().getCodeSource()
+                        .getLocation().toURI())
+                .getParent();
+        Path filePath = jarDir.resolve(filename);
+        if (allowNotFoundInJar || Files.exists(filePath)) {
+            return filePath.toUri().toURL();
+        }
+        // ① 优先查找本地文件系统
+        return ClassLoader.getSystemResource(filename);
+    }
+
+    /**
+     * 创建文件（如果文件不存在）
+     * 
+     * @param file        文件对象
+     * @param isDirectory 是否为目录
+     * @throws IOException 创建文件过程中可能抛出的异常
+     */
+    public static void createFileIfNotExist(File file, boolean isDirectory) throws IOException {
+        if (!file.exists()) {
+            if (isDirectory) {
+                file.mkdirs();
+            } else {
+                File parentFile = file.getParentFile();
+                if (!parentFile.exists()) {
+                    parentFile.mkdirs();
+                }
+                file.createNewFile();
+            }
+
+        }
     }
 
     /**
@@ -142,10 +202,13 @@ public class FileUtils {
      * @throws FileInputstreamOperationException 流处理异常
      * @throws FileNotFoundException             文件未找到异常
      * @throws IOException                       文件操作异常
+     * @throws URISyntaxException                获取JAR文件路径异常
      */
-    public static void resourcesFileInputStreamConsumer(ConsumerThrowable<InputStream> streamConsumer,
-            String... paths) throws FileInputstreamOperationException, FileNotFoundException, IOException {
-        try (InputStream inputStream = loadFile(paths);) {
+    public static void resourcesFileInputStreamConsumer(Class<?> runTimeMainJarClass,
+            ConsumerThrowable<InputStream> streamConsumer,
+            String... paths)
+            throws FileInputstreamOperationException, FileNotFoundException, IOException, URISyntaxException {
+        try (InputStream inputStream = loadFile(runTimeMainJarClass, paths);) {
             try {
                 streamConsumer.accept(inputStream);
             } catch (Throwable e) {
@@ -163,10 +226,13 @@ public class FileUtils {
      * @throws FileInputstreamOperationException 流处理异常
      * @throws FileNotFoundException             文件未找到异常
      * @throws IOException                       文件操作异常
+     * @throws URISyntaxException                获取JAR文件路径异常
      */
-    public static <T> T resourcesFileInputStreamFunction(FunctionThrowable<InputStream, T> functionThrowable,
-            String... paths) throws FileInputstreamOperationException, FileNotFoundException, IOException {
-        try (InputStream inputStream = loadFile(paths);) {
+    public static <T> T resourcesFileInputStreamFunction(Class<?> runTimeMainJarClass,
+            FunctionThrowable<InputStream, T> functionThrowable,
+            String... paths)
+            throws FileInputstreamOperationException, FileNotFoundException, IOException, URISyntaxException {
+        try (InputStream inputStream = loadFile(runTimeMainJarClass, paths);) {
             try {
                 return functionThrowable.apply(inputStream);
             } catch (Throwable e) {
@@ -182,9 +248,11 @@ public class FileUtils {
      * @return 文件内容字符串（行间用换行符连接）
      * @throws FileNotFoundException 文件未找到异常
      * @throws IOException           文件操作异常
+     * @throws URISyntaxException    获取JAR文件路径异常
      */
-    public static String resourcesFileContent(String... paths) throws FileNotFoundException, IOException {
-        try (InputStream inpustream = loadFile(paths);) {
+    public static String resourcesFileContent(Class<?> runTimeMainJarClass, String... paths)
+            throws FileNotFoundException, IOException, URISyntaxException {
+        try (InputStream inpustream = loadFile(runTimeMainJarClass, paths);) {
             return new BufferedReader(new InputStreamReader(inpustream)).lines().collect(Collectors.joining("\n"));
         }
     }
@@ -200,11 +268,13 @@ public class FileUtils {
      * 
      *                                           注意事项：
      *                                           - 流对象由方法内部管理，调用方无需关闭
+     * @throws URISyntaxException                获取JAR文件路径异常
      */
-    public static void resourcesFileContentLineByLine(ConsumerThrowable<Stream<String>> consumerThrowable,
+    public static void resourcesFileContentLineByLine(Class<?> runTimeMainJarClass,
+            ConsumerThrowable<Stream<String>> consumerThrowable,
             String... paths)
-            throws FileNotFoundException, IOException, FileInputstreamOperationException {
-        try (InputStream inpustream = loadFile(paths);) {
+            throws FileNotFoundException, IOException, FileInputstreamOperationException, URISyntaxException {
+        try (InputStream inpustream = loadFile(runTimeMainJarClass, paths);) {
             Stream<String> lines = new BufferedReader(new InputStreamReader(inpustream)).lines();
             try {
                 consumerThrowable.accept(lines);
@@ -239,6 +309,19 @@ public class FileUtils {
             return jarFile.getParentFile();
         } catch (Exception e) {
             throw new FileNotFoundException("无法获取 JAR 包路径", e);
+        }
+    }
+
+    /**
+     * 将字符串内容写入文件
+     * 
+     * @param file      目标文件
+     * @param dumpAsMap 写入的字符串内容
+     * @throws IOException 文件写入异常
+     */
+    public static void writeFile(File file, String dumpAsMap) throws IOException {
+        try (FileWriter fileWriter = new FileWriter(file)) {
+            fileWriter.write(dumpAsMap);
         }
     }
 
