@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.drizzlepal</groupId>
+        <artifactId>parent</artifactId>
+        <version>1.0.0</version>
+    </parent>
+
+    <groupId>com.drizzlepal</groupId>
+    <artifactId>drizzle-pom</artifactId>
+    <packaging>pom</packaging>
+    <name>drizzlepal pom</name>
+    <description>drizzlepal 依赖管理，用于给使用方提供 drizzlepal 子模块版本控制</description>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.drizzlepal.springboot2</groupId>
+                <artifactId>drizzle-webstarter</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.drizzlepal.springboot3</groupId>
+                <artifactId>drizzle-webstarter</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.drizzlepal.springboot</groupId>
+                <artifactId>drizzle-miniostarter</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.drizzlepal</groupId>
+                <artifactId>drizzle-utils</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.drizzlepal</groupId>
+                <artifactId>drizzle-crypto</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.drizzlepal</groupId>
+                <artifactId>drizzle-token</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.drizzlepal</groupId>
+                <artifactId>drizzle-jdbc</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.drizzlepal</groupId>
+                <artifactId>drizzle-token</artifactId>
+                <version>${revision}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+</project>

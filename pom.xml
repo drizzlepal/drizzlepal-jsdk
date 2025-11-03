@@ -12,15 +12,15 @@
     <description>drizzlepal jsdk 父级工程用于子模块版本控制和通用配置，比如依赖版本、构建插件版本等</description>
 
     <modules>
-        <module>pom</module>
-        <module>utils</module>
-        <module>token</module>
-        <module>springboot</module>
-        <module>crawler</module>
-        <module>jdbc</module>
-        <module>rpc</module>
-        <module>crypto</module>
-        <module>flink</module>
+        <module>drizzle-pom</module>
+        <module>drizzle-utils</module>
+        <module>drizzle-token</module>
+        <module>drizzle-springboot</module>
+        <module>drizzle-crawler</module>
+        <module>drizzle-jdbc</module>
+        <module>drizzle-rpc</module>
+        <module>drizzle-crypto</module>
+        <module>drizzle-flink</module>
     </modules>
 
     <properties>
