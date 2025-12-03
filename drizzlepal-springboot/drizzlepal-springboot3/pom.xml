@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.drizzlepal</groupId>
+        <artifactId>drizzlepal-springboot</artifactId>
+        <version>${revision}</version>
+    </parent>
+
+    <groupId>com.drizzlepal.springboot</groupId>
+    <artifactId>drizzlepal-springboot3</artifactId>
+    <packaging>pom</packaging>
+    <name>drizzlepal springboot3 parent</name>
+    <description>drizzlepal springboot3 特有模块父类</description>
+    <modules>
+        <module>drizzlepal-webstarter</module>
+    </modules>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>3.5.4</version>
+                <scope>import</scope>
+                <type>pom</type>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+</project>

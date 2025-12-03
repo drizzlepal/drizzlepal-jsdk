@@ -5,22 +5,22 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.drizzlepal</groupId>
-    <artifactId>parent</artifactId>
-    <version>1.0.0</version>
+    <artifactId>drizzlepal-parent</artifactId>
+    <version>${revision}</version>
     <packaging>pom</packaging>
     <name>drizzlepal parent</name>
     <description>drizzlepal jsdk 父级工程用于子模块版本控制和通用配置，比如依赖版本、构建插件版本等</description>
 
     <modules>
-        <module>drizzle-pom</module>
-        <module>drizzle-utils</module>
-        <module>drizzle-token</module>
-        <module>drizzle-springboot</module>
-        <module>drizzle-crawler</module>
-        <module>drizzle-jdbc</module>
-        <module>drizzle-rpc</module>
-        <module>drizzle-crypto</module>
-        <module>drizzle-flink</module>
+        <module>drizzlepal-pom</module>
+        <module>drizzlepal-utils</module>
+        <module>drizzlepal-token</module>
+        <module>drizzlepal-springboot</module>
+        <module>drizzlepal-crawler</module>
+        <module>drizzlepal-jdbc</module>
+        <module>drizzlepal-rpc</module>
+        <module>drizzlepal-crypto</module>
+        <module>drizzlepal-flink</module>
     </modules>
 
     <properties>
@@ -210,5 +210,38 @@
             <url>http://localhost:8081/repository/maven-snapshots/</url>
         </snapshotRepository>
     </distributionManagement>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>flatten-maven-plugin</artifactId>
+                <version>1.6.0</version>
+
+                <configuration>
+                    <updatePomFile>true</updatePomFile>
+                    <flattenMode>resolveCiFriendliesOnly</flattenMode>
+                </configuration>
+
+                <executions>
+                    <execution>
+                        <id>flatten</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>flatten</goal>
+                        </goals>
+                    </execution>
+
+                    <execution>
+                        <id>flatten.clean</id>
+                        <phase>clean</phase>
+                        <goals>
+                            <goal>clean</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>
