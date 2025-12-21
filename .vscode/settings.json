@@ -1,0 +1,37 @@
+{
+    "java.configuration.runtimes": [
+        {
+            "name": "JavaSE-1.8",
+            "path": "/home/songyu/data/mise/data/installs/java/liberica-8u462+11"
+        },
+        {
+            "name": "JavaSE-17",
+            "path": "/home/songyu/data/mise/data/installs/java/liberica-17.0.16+12"
+        },
+        {
+            "name": "JavaSE-21",
+            "path": "/home/songyu/data/mise/data/installs/java/liberica-21.0.9+11"
+        }
+    ],
+    "java.jdt.ls.java.home": "/home/songyu/data/mise/data/installs/java/liberica-21.0.9+11",
+    "go.goroot": "/home/songyu/data/mise/data/installs/go/1.25.1",
+    "go.gopath": "/home/songyu/data/mise/data/installs/go/1.25.1/gopath",
+    "maven.terminal.useJavaHome": false,
+    "maven.executable.options": " -s /home/songyu/data/projects/drizzlepal/settings.xml ",
+    "maven.terminal.customEnv": [
+        {
+            "environmentVariable": "JAVA_HOME",
+            "value": "/home/songyu/data/mise/data/installs/java/liberica-17.0.16+12"
+        },
+    ],
+    "java.configuration.updateBuildConfiguration": "automatic",
+    "java.compile.nullAnalysis.mode": "automatic",
+    "java.jdt.ls.vmargs": "-XX:+UseParallelGC -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Dsun.zip.disableMemoryMapping=true -Xmx16G -Xms100m -Xlog:disable",
+    "java.configuration.maven.globalSettings": "/home/songyu/data/projects/drizzlepal/settings.xml",
+    "editor.formatOnSave": true,
+    "java.debug.settings.hotCodeReplace": "auto",
+    "[java]": {
+        "editor.defaultFormatter": "redhat.java",
+    },
+    "java.debug.settings.onBuildFailureProceed": true
+}
