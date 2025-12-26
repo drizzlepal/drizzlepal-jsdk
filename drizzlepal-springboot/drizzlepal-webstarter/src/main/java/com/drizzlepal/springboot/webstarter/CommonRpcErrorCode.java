@@ -4,6 +4,7 @@ import org.springframework.http.HttpStatus;
 
 public enum CommonRpcErrorCode implements RpcErrorCode {
 
+    Success("Success", "成功", HttpStatus.OK),
     ParamInvalid("ParamInvalid", "非法的参数", HttpStatus.BAD_REQUEST),
     Unknown("Unknown", "未定义的错误", HttpStatus.INTERNAL_SERVER_ERROR);
 

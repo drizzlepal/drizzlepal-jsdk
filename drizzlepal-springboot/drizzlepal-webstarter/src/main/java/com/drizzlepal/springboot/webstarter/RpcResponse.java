@@ -1,18 +1,23 @@
 package com.drizzlepal.springboot.webstarter;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 /**
  * RPC 响应结果
  */
 @Data
+@Schema(name = "HTTP 响应规范", description = "统一响应结果")
 public abstract class RpcResponse<T> {
 
-    protected final String code;
+    @Schema(name = "响应码", description = "响应码")
+    protected String code;
 
-    protected final String message;
+    @Schema(name = "响应信息", description = "响应信息")
+    protected String message;
 
-    protected final T data;
+    @Schema(name = "响应数据", description = "响应数据")
+    protected T data;
 
     public RpcResponse(String code, String message, T data) {
         this.code = code;
@@ -30,9 +35,15 @@ public abstract class RpcResponse<T> {
         };
     }
 
-    public static Object failed(String detail) {
+    public static RpcResponse<?> failed(String detail) {
         return new RpcResponse<String>(CommonRpcErrorCode.Unknown.name(), detail,
                 null) {
+        };
+    }
+
+    public static <T> RpcResponse<T> succeed(T data) {
+        return new RpcResponse<T>(CommonRpcErrorCode.Success.name(), CommonRpcErrorCode.Success.getMessage(),
+                data) {
         };
     }
 
