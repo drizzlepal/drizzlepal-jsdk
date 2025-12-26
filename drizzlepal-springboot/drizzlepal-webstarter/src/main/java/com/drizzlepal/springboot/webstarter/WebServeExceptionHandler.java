@@ -11,10 +11,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.drizzlepal.rpc.RpcException;
-import com.drizzlepal.rpc.RpcResponse;
-import com.drizzlepal.rpc.RpcStatusCommon;
-
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -35,7 +31,7 @@ public class WebServeExceptionHandler {
     @ResponseBody
     @ExceptionHandler(RpcException.class)
     public ResponseEntity<RpcResponse<?>> handleRpcException(RpcException ex) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR.value()).body(RpcResponse.failed(ex));
+        return ResponseEntity.status(ex.getCode().getHttpStatus().value()).body(RpcResponse.failed(ex));
     }
 
     /**
@@ -54,7 +50,7 @@ public class WebServeExceptionHandler {
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST.value())
                 .body(RpcResponse.failed(
-                        RpcException.newRpcException(RpcStatusCommon.PARAM_INVALID, stringJoiner.toString(), ex)));
+                        RpcException.newRpcException(CommonRpcErrorCode.ParamInvalid, stringJoiner.toString(), ex)));
     }
 
     /**
@@ -69,7 +65,7 @@ public class WebServeExceptionHandler {
     public ResponseEntity<RpcResponse<?>> handleException(Throwable cause) {
         log.error("未处理的异常", cause);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR.value())
-                .body(RpcResponse.failed(RpcStatusCommon.UNKNOWN_ERROR));
+                .body(RpcResponse.failed(CommonRpcErrorCode.Unknown, cause));
     }
 
 }

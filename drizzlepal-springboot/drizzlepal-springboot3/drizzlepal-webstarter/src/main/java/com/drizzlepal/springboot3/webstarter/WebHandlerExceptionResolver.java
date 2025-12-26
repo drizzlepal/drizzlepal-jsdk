@@ -13,7 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.DefaultHandlerExceptionResolver;
 
 import com.alibaba.fastjson2.JSON;
-import com.drizzlepal.rpc.RpcResponse;
+import com.drizzlepal.springboot.webstarter.RpcResponse;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

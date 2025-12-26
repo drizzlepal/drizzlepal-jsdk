@@ -36,6 +36,7 @@ public class WebStarterConfig implements WebMvcConfigurer {
      *
      * @param converters 消息转换器列表
      */
+    @SuppressWarnings("null")
     @Override
     public void configureMessageConverters(@NonNull List<HttpMessageConverter<?>> converters) {
         // 创建并配置FastJson消息转换器

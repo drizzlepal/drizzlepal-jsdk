@@ -18,7 +18,6 @@
         <module>drizzlepal-springboot</module>
         <module>drizzlepal-crawler</module>
         <module>drizzlepal-jdbc</module>
-        <module>drizzlepal-rpc</module>
         <module>drizzlepal-crypto</module>
         <module>drizzlepal-flink</module>
     </modules>

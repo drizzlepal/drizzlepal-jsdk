@@ -2,7 +2,9 @@ package com.drizzlepal.springboot.webstarte.controller;
 
 import org.springframework.web.bind.annotation.RestController;
 
-import com.drizzlepal.rpc.exception.asserts.RpcParamAssert;
+import com.drizzlepal.springboot.webstarter.CommonRpcErrorCode;
+import com.drizzlepal.springboot.webstarter.RpcAssert;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -11,7 +13,7 @@ public class TestController {
 
     @GetMapping("/test4xx")
     public String test4xx(@RequestParam("name") String name) {
-        RpcParamAssert.isTrue(name.equals("name"), "非法参数");
+        RpcAssert.isTrue(name.equals("name"), CommonRpcErrorCode.ParamInvalid, "非法参数");
         return "test hello:" + name;
     }
 

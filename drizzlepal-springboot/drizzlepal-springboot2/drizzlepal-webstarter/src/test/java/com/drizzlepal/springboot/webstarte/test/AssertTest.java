@@ -19,12 +19,14 @@ public class AssertTest {
     @Autowired
     private MockMvc mockMvc;
 
+    @SuppressWarnings("null")
     @Test
     public void test() throws Exception {
         this.mockMvc.perform(get("/test4xx").param("name", "names")).andDo(print())
                 .andExpect(status().is4xxClientError()).andExpect(content().string(containsString("非法参数")));
     }
 
+    @SuppressWarnings("null")
     @Test
     public void test2() throws Exception {
         this.mockMvc.perform(get("/test5xx").param("name", "name")).andDo(print())
