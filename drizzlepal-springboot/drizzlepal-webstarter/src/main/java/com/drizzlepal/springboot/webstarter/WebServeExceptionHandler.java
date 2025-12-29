@@ -29,9 +29,10 @@ public class WebServeExceptionHandler {
      * @return 包含异常信息的RpcResponse响应实体
      */
     @ResponseBody
-    @ExceptionHandler(RpcException.class)
-    public ResponseEntity<RpcResponse<?>> handleRpcException(RpcException ex) {
-        return ResponseEntity.status(ex.getCode().getHttpStatus().value()).body(RpcResponse.failed(ex));
+    @ExceptionHandler(WebException.class)
+    public ResponseEntity<WebErrorResponse> handleRpcException(WebException ex) {
+        return ResponseEntity.status(ex.getCode().getHttpStatus().value())
+                .body(new WebErrorResponse(ex.getCode(), ex.getMessage()));
     }
 
     /**
@@ -43,14 +44,13 @@ public class WebServeExceptionHandler {
      */
     @ResponseBody
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<RpcResponse<?>> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
+    public ResponseEntity<WebErrorResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
         StringJoiner stringJoiner = new StringJoiner(";");
         for (FieldError fieldError : ex.getFieldErrors()) {
             stringJoiner.add(fieldError.getField() + ": " + fieldError.getDefaultMessage());
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST.value())
-                .body(RpcResponse.failed(
-                        RpcException.newRpcException(CommonRpcErrorCode.ParamInvalid, stringJoiner.toString(), ex)));
+                .body(new WebErrorResponse(CommonWebErrorCode.ParamInvalid, stringJoiner.toString()));
     }
 
     /**
@@ -62,10 +62,10 @@ public class WebServeExceptionHandler {
      */
     @ResponseBody
     @ExceptionHandler({ Throwable.class })
-    public ResponseEntity<RpcResponse<?>> handleException(Throwable cause) {
+    public ResponseEntity<WebErrorResponse> handleException(Throwable cause) {
         log.error("未处理的异常", cause);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR.value())
-                .body(RpcResponse.failed(CommonRpcErrorCode.Unknown, cause));
+                .body(new WebErrorResponse(CommonWebErrorCode.Unknown, cause.getMessage()));
     }
 
 }

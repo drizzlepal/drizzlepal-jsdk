@@ -2,7 +2,7 @@ package com.drizzlepal.springboot.webstarter;
 
 import org.springframework.http.HttpStatus;
 
-public interface RpcErrorCode {
+public interface WebErrorCode {
 
     String getName();
 

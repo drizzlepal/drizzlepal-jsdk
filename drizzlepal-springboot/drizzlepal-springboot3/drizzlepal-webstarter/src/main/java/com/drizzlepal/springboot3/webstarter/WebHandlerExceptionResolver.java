@@ -13,7 +13,8 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.DefaultHandlerExceptionResolver;
 
 import com.alibaba.fastjson2.JSON;
-import com.drizzlepal.springboot.webstarter.RpcResponse;
+import com.drizzlepal.springboot.webstarter.CommonWebErrorCode;
+import com.drizzlepal.springboot.webstarter.WebErrorResponse;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -38,7 +39,8 @@ public class WebHandlerExceptionResolver extends DefaultHandlerExceptionResolver
             response.setContentType(MediaType.APPLICATION_JSON_VALUE);
             response.setCharacterEncoding(StandardCharsets.UTF_8.name());
             response.getWriter()
-                    .write(JSON.toJSONString(RpcResponse.failed(errorResponse.getBody().getDetail())));
+                    .write(JSON.toJSONString(new WebErrorResponse(CommonWebErrorCode.Unknown,
+                            errorResponse.getBody().getDetail())));
             response.flushBuffer();
         } else {
             log.warn("Ignoring exception, response committed. : " + errorResponse);

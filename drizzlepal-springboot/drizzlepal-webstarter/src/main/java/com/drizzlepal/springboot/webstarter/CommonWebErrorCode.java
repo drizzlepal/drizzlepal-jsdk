@@ -2,7 +2,7 @@ package com.drizzlepal.springboot.webstarter;
 
 import org.springframework.http.HttpStatus;
 
-public enum CommonRpcErrorCode implements RpcErrorCode {
+public enum CommonWebErrorCode implements WebErrorCode {
 
     Success("Success", "成功", HttpStatus.OK),
     ParamInvalid("ParamInvalid", "非法的参数", HttpStatus.BAD_REQUEST),
@@ -14,7 +14,7 @@ public enum CommonRpcErrorCode implements RpcErrorCode {
 
     private final String message;
 
-    CommonRpcErrorCode(String name, String message, HttpStatus httpStatus) {
+    CommonWebErrorCode(String name, String message, HttpStatus httpStatus) {
         this.name = name;
         this.message = message;
         this.httpStatus = httpStatus;
