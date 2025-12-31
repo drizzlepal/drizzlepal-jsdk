@@ -48,32 +48,32 @@ public abstract class WebException extends RuntimeException {
         return code;
     }
 
-    public static WebException newRpcException(Throwable cause) {
+    public static WebException newWebException(Throwable cause) {
         return new WebException(cause) {
         };
     }
 
-    public static WebException newRpcException(String detail) {
+    public static WebException newWebException(String detail) {
         return new WebException(detail) {
         };
     }
 
-    public static WebException newRpcException(String detail, Throwable cause) {
+    public static WebException newWebException(String detail, Throwable cause) {
         return new WebException(detail, cause) {
         };
     }
 
-    public static WebException newRpcException(WebErrorCode code) {
+    public static WebException newWebException(WebErrorCode code) {
         return new WebException(code) {
         };
     }
 
-    public static WebException newRpcException(WebErrorCode code, Throwable cause) {
+    public static WebException newWebException(WebErrorCode code, Throwable cause) {
         return new WebException(code, cause) {
         };
     }
 
-    public static WebException newRpcException(WebErrorCode code, String detail) {
+    public static WebException newWebException(WebErrorCode code, String detail) {
         return new WebException(code, detail) {
         };
     }
