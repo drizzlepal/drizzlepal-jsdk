@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ServerErrorException;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -51,6 +52,14 @@ public class WebServeExceptionHandler {
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST.value())
                 .body(new WebErrorResponse(CommonWebErrorCode.ParamInvalid, stringJoiner.toString()));
+    }
+
+    @ResponseBody
+    @ExceptionHandler(ServerErrorException.class)
+    public ResponseEntity<WebErrorResponse> handleMethodArgumentNotValidException(ServerErrorException ex) {
+        log.error("未标化服务异常", ex);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                .body(new WebErrorResponse(CommonWebErrorCode.ServerError, ex.getReason()));
     }
 
     /**

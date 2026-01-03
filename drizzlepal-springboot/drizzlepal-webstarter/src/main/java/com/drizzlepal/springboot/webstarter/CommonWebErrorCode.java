@@ -6,6 +6,7 @@ public enum CommonWebErrorCode implements WebErrorCode {
 
     Success("Success", "成功", HttpStatus.OK),
     ParamInvalid("ParamInvalid", "非法的参数", HttpStatus.BAD_REQUEST),
+    ServerError("ServerError", "未标化服务错误", HttpStatus.INTERNAL_SERVER_ERROR),
     Unknown("Unknown", "未定义的错误", HttpStatus.INTERNAL_SERVER_ERROR);
 
     private final String name;
