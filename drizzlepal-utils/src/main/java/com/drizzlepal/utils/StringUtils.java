@@ -35,4 +35,29 @@ public class StringUtils {
         // 全部字符均为空白时返回true
         return true;
     }
+
+    /**
+     * 判断字符串是否为纯数字
+     * 使用正则表达式匹配，只允许0-9的数字字符
+     * 注意：空字符串会返回false，整数、负数、小数均会返回false
+     * 
+     * @param numberStr 待检查字符串
+     * @return 当字符串完全由数字组成（至少一个字符）时返回true，否则返回false
+     */
+    public static boolean isNumber(String numberStr) {
+        return numberStr.matches("[0-9]+");
+    }
+
+    /**
+     * 判断字符串是否全部为中文字符
+     * 使用Unicode区间匹配中文字符范围\u4e00-\u9fa5
+     * 注意：包含任何非中文字符（如数字、字母、标点）都会返回false
+     * 
+     * @param chineseStr 待检查字符串
+     * @return 当字符串完全由中文字符组成（至少一个字符）时返回true，否则返回false
+     */
+    public static boolean isChinese(String chineseStr) {
+        return chineseStr.matches("[\\u4e00-\\u9fa5]+");
+    }
+
 }
